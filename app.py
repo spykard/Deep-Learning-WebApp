@@ -6,56 +6,48 @@ from flask import Flask, redirect, url_for, request, render_template, Response, 
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
-# TensorFlow and tf.keras
-import tensorflow as tf
-from tensorflow import keras
-
-from tensorflow.keras.applications.imagenet_utils import preprocess_input, decode_predictions
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-
 # Some utilites
 import numpy as np
 from util import base64_to_pil
 
+from tensorflow.keras.models import load_model
+import deeplearning
 
 # Declare a flask app
 app = Flask(__name__)
-
 
 # You can use pretrained model from Keras
 # Check https://keras.io/applications/
 # or https://www.tensorflow.org/api_docs/python/tf/keras/applications
 
-from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
-model = MobileNetV2(weights='imagenet')
-
-print('Model loaded. Check http://127.0.0.1:5000/')
-
-
 # Model saved with Keras model.save()
-MODEL_PATH = 'models/your_model.h5'
+MODEL_PATH = 'models/best_model_text.h5'
 
-# Load your own trained model
-# model = load_model(MODEL_PATH)
-# model._make_predict_function()          # Necessary
-# print('Model loaded. Start serving...')
+# Load my own trained model
+model = load_model(MODEL_PATH)
+print(f'Model loaded, Start serving... - Check http://127.0.0.1:5000/')
 
+# IMAGE RELATED
+# def model_predict(img, model):
+#     img = img.resize((224, 224))
 
-def model_predict(img, model):
-    img = img.resize((224, 224))
+#     # Preprocessing the image
+#     x = image.img_to_array(img)
+#     # x = np.true_divide(x, 255)
+#     x = np.expand_dims(x, axis=0)
 
-    # Preprocessing the image
-    x = image.img_to_array(img)
-    # x = np.true_divide(x, 255)
-    x = np.expand_dims(x, axis=0)
+#     # Be careful how your trained model deals with the input
+#     # otherwise, it won't make correct prediction!
+#     x = preprocess_input(x, mode='tf')
 
-    # Be careful how your trained model deals with the input
-    # otherwise, it won't make correct prediction!
-    x = preprocess_input(x, mode='tf')
+#     preds = model.predict(x)
+#     return preds
 
-    preds = model.predict(x)
-    return preds
+# Get the image from post request
+# img = base64_to_pil(request.json)
+
+# Save the image to ./uploads
+# img.save("./uploads/image.png")
 
 
 @app.route('/', methods=['GET'])
@@ -67,24 +59,17 @@ def index():
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
-        # Get the image from post request
-        img = base64_to_pil(request.json)
-
-        # Save the image to ./uploads
-        # img.save("./uploads/image.png")
-
         # Make prediction
-        preds = model_predict(img, model)
+        print(f'Running preprocessing...\n')
+        test_sentence = deeplearning.run_deeplearning()
+        print(f'Input sentence preprocessing ready. Running prediction...\n')
 
-        # Process your result for human
-        pred_proba = "{:.3f}".format(np.amax(preds))    # Max probability
-        pred_class = decode_predictions(preds, top=1)   # ImageNet Decode
+        result = deeplearning.evaluate_single_sentence(model, test_sentence, multiclass=False)  # a tuple
 
-        result = str(pred_class[0][0][1])               # Convert to string
-        result = result.replace('_', ' ').capitalize()
-        
+        print(f'Prediction is {result[0].capitalize()}, with a probability of {result[1][0][0]}\n')
+
         # Serialize the result, you can add additional fields
-        return jsonify(result=result, probability=pred_proba)
+        return jsonify(result=result[0].capitalize(), probability=str(result[1][0][0]))
 
     return None
 
