@@ -132,7 +132,7 @@ function displayResult(data) {
   // display the result
   // imageDisplay.classList.remove("loading");
   hide(loader);
-  predResult.innerHTML = data.result;
+  predResult.innerHTML = data.result + " " + data.probability;
   show(predResult);
 }
 
