@@ -58,6 +58,18 @@ body {
   opacity: 0.2;
 }
 
+/* Text box */
+.text-box {
+  font-size: 0.8rem;
+  color: #666666;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 1rem 0 2rem 0;
+}
+
 /* Upload box */
 .upload-box {
   font-size: 0.8rem;
@@ -105,12 +117,29 @@ body {
   text-align: center; 
 }
 
+#text-box {
+  position: relative;
+  width: auto;
+  float: left;
+  margin-bottom: 2rem;
+  text-align: center; 
+}
+
 #image-display {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   max-height: 20rem;
 }
 
 #image-display.loading {
+  filter: brightness(30%);
+}
+
+#text-display {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  max-height: 20rem;
+}
+
+#text-display.loading {
   filter: brightness(30%);
 }
 
@@ -123,7 +152,25 @@ body {
   transform: translate(-50%, -50%);
 }
 
+#pred-result-text {
+  color: white;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  margin: 0 auto;
+}
+
+#loader-text {
   position: absolute;
   top: 50%;
   left: 50%;

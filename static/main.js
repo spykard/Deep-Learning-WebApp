@@ -5,6 +5,8 @@
 var fileDrag = document.getElementById("file-drag");
 var fileSelect = document.getElementById("file-upload");
 
+var textInput = document.getElementById("text-upload");
+
 // Add event listeners
 fileDrag.addEventListener("dragover", fileDragHover, false);
 fileDrag.addEventListener("dragleave", fileDragHover, false);
@@ -37,6 +39,10 @@ var imageDisplay = document.getElementById("image-display");
 var uploadCaption = document.getElementById("upload-caption");
 var predResult = document.getElementById("pred-result");
 var loader = document.getElementById("loader");
+
+var textDisplay = document.getElementById("text-display");
+var predResultText = document.getElementById("pred-result-text");
+var loaderText = document.getElementById("loader-text");
 
 //========================================================================
 // Main button events
@@ -76,6 +82,35 @@ function clearImage() {
   imageDisplay.classList.remove("loading");
 }
 
+function submitText() {
+  // action for the submit button
+  console.log("submit");
+
+  if (textInput.value == "") {
+    window.alert("Please input text before submit.");
+    return;
+  }
+
+  loaderText.classList.remove("hidden");
+  textDisplay.classList.add("loading");
+
+  // call the predict function of the backend
+  predictText(textInput.value);
+}
+
+function clearText() {
+  // reset input text
+  textInput.value = "";
+
+  predResultText.innerHTML = "";
+
+  hide(textDisplay);
+  hide(loaderText);
+  hide(predResultText);
+
+  imageDisplay.classList.remove("loading");
+}
+
 function previewFile(file) {
   // show the preview of the image
   console.log(file.name);
@@ -102,7 +137,27 @@ function previewFile(file) {
 //========================================================================
 
 function predictImage(image) {
-  fetch("/predict", {
+  fetch("/predictImage", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(image)
+  })
+    .then(resp => {
+      if (resp.ok)
+        resp.json().then(data => {
+          displayResult(data);
+        });
+    })
+    .catch(err => {
+      console.log("An error occured", err.message);
+      window.alert("Oops! Something went wrong.");
+    });
+}
+
+function predictText(image) {
+  fetch("/predictText", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -134,6 +189,14 @@ function displayResult(data) {
   hide(loader);
   predResult.innerHTML = data.result + " " + data.probability;
   show(predResult);
+}
+
+function displayResultText(data) {
+  // display the result
+  // textDisplay.classList.remove("loading");
+  hide(loader);
+  predResultText.innerHTML = data.result + " " + data.probability;
+  show(predResultText);
 }
 
 function hide(el) {

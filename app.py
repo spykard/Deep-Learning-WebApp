@@ -56,8 +56,26 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/predict', methods=['GET', 'POST'])
-def predict():
+@app.route('/predictImage', methods=['GET', 'POST'])
+def predictImage():
+    if request.method == 'POST':
+        # Make prediction
+        print(f'Running preprocessing...\n')
+        test_sentence = deeplearning.run_deeplearning()
+        print(f'Input sentence preprocessing ready. Running prediction...\n')
+
+        result = deeplearning.evaluate_single_sentence(model, test_sentence, multiclass=False)  # a tuple
+
+        print(f'Prediction is {result[0].capitalize()}, with a probability of {result[1][0][0]}\n')
+
+        # Serialize the result, you can add additional fields
+        return jsonify(result=result[0].capitalize(), probability=str(result[1][0][0]))
+
+    return None
+
+
+@app.route('/predictText', methods=['GET', 'POST'])
+def predictText():
     if request.method == 'POST':
         # Make prediction
         print(f'Running preprocessing...\n')
