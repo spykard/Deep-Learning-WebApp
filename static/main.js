@@ -167,7 +167,7 @@ function predictText(image) {
     .then(resp => {
       if (resp.ok)
         resp.json().then(data => {
-          displayResult(data);
+          displayResultText(data);
         });
     })
     .catch(err => {
@@ -194,7 +194,7 @@ function displayResult(data) {
 function displayResultText(data) {
   // display the result
   // textDisplay.classList.remove("loading");
-  hide(loader);
+  hide(loaderText);
   predResultText.innerHTML = data.result + " " + data.probability;
   show(predResultText);
 }
