@@ -346,7 +346,7 @@ def assign_embeddings(embeddings, embeddings_dimension, vocab, mode):
 ### FIRST, execute the entire preprocessing phase again (there are more efficient ways, but this works universally).
 
 
-def run_deeplearning(input_test_sentence):
+def run_preprocessing(input_test_sentence):
     ###   INPUT    ###
     #test_sentence = ["very bad movie, wow awful such a bad performance from the actors."]  # Example sentence for debug purposes
     test_sentence = input_test_sentence
@@ -354,7 +354,7 @@ def run_deeplearning(input_test_sentence):
 
     ### Parameters ###
     remove_first = False #@param {type:"boolean"}
-    embeddings_mode = "One-hot Encoding" #@param ["One-hot Encoding", "Tokenizing", "Word2Vec Pretrained", "Word2Vec Training"]
+    embeddings_mode = "Word2Vec Pretrained" #@param ["One-hot Encoding", "Tokenizing", "Word2Vec Pretrained", "Word2Vec Training"]
     embeddings_sequence_length = 50 #@param {type:"integer"}
     trainable = False #@param {type:"boolean"}
     outofvocab_mode = "random" #@param ["zeros", "random"]
@@ -435,8 +435,7 @@ def run_deeplearning(input_test_sentence):
             Description: A much more advanced form of embeddings that is created through training a model unlike previous modes. Implements the CBOW and the Skip-gram models in order to learn word embeddings.
             Embedding_Layer: Yes
         '''
-        word2vec = load_word2vec_pretrained()  # This line can be commented out, if it was already loaded in the current session
-        embeddings_dimension = word2vec.vector_size
+        # RUNNING word2vec is not actually needed, only needed for training the neural network
         
         if dataset_name != "IMDb Large Movie Review Dataset":  # keras.imdb is already One-hot Encoded
             tokenizer = Tokenizer(num_words=feature_count, 
@@ -465,9 +464,6 @@ def run_deeplearning(input_test_sentence):
         # NEW
         test_sentence, _ = sequence_padding(test_sentence, test_sentence, embeddings_sequence_length)  
 
-        manage_oov_words(word2vec, word_index)
-        embedding_vectors = assign_embeddings(word2vec, embeddings_dimension, word_index, mode=outofvocab_mode)
-
     elif embeddings_mode == "Word2Vec Training":
         ''' 
             Description: A much more advanced form of embeddings that is created through training a model unlike previous modes. Implements the CBOW and the Skip-gram models in order to learn word embeddings.
@@ -489,26 +485,16 @@ def run_deeplearning(input_test_sentence):
         else:
             word_index, reverse_word_index = other_datasets_word_index(tokenizer)
 
-        word_index, reverse_word_index = reduce_word_index_features(word_index, reverse_word_index, train_data)  # Update the word index to match the number of features we selected       
-        
-        # Train a Model
-        time_counter = time.time()    
-        print(f"\nTraining a new custom Word2Vec model on the dataset...")
-        word2vec = Word2Vec([decode_review(instance, reverse_word_index, mode="don't join") for instance in train_data],  # Default is 5 epochs 
-                            size=300, sg=0, window=5, min_count=1, iter=5,
-                            seed=random_state, alpha=0.025, workers=4)
-        embeddings_dimension = word2vec.wv.vector_size
-        print(f"Training completed in {time.time()-time_counter:.2f}sec. Vocabulary size: {len(word2vec.wv.vocab)}\n")  
+        word_index, reverse_word_index = reduce_word_index_features(word_index, reverse_word_index, train_data)  # Update the word index to match the number of features we selected        
+
+        # NEW
+        test_sentence = encode_review(test_sentence[0], word_index)
+        test_sentence = np.array([test_sentence])  # Convert back to 2D array even if there is no use yet
 
         # Peform Sequence Padding  
-        train_data, test_data = sequence_padding(train_data, test_data, embeddings_sequence_length) 
-        
-        manage_oov_words(word2vec.wv, word_index)   
-        embedding_vectors = assign_embeddings(word2vec.wv, embeddings_dimension, word_index, mode=outofvocab_mode)    
-        
-        # If we want to store the model
-        if False:
-            model.wv.save_word2vec_format("My_Word2Vec.txt", binary=False)    
+        train_data, test_data = sequence_padding(train_data, test_data, embeddings_sequence_length)
+        # NEW
+        test_sentence, _ = sequence_padding(test_sentence, test_sentence, embeddings_sequence_length)          
 
     # Print the resulting instances       
     for i in range(4): print(type(train_data[i]), list(train_data[i]))
@@ -517,7 +503,7 @@ def run_deeplearning(input_test_sentence):
 
 """Decide on a final embeddings mode out of the 4. Then the above code can be run once at the start, and a different code can be run each time for a prediction.
 
-### Codeha
+### Code
 """
 
 # Evaluation Phase
