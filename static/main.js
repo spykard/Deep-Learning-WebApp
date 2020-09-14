@@ -156,7 +156,7 @@ function predictImage(image) {
     });
 }
 
-function predictText(tex) {
+function predictText(text) {
   fetch("/predictText", {
     method: "POST",
     headers: {
