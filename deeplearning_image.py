@@ -31,9 +31,13 @@ def run(img, model):
     x = preprocess_input(x, mode='tf')
 
     # Evaluation Phase
-    prediction = model.predict(x)
+    probabilities = model.predict(x)
+    #probability = "{:.3f}".format(np.amax(probabilities))   # Max probability
+    probability = f"{np.amax(probabilities):.3f}"   # Max probability
 
+    prediction = decode_predictions(probabilities, top=1)   # ImageNet Decode
 
+    prediction = str(prediction[0][0][1])  # Convert to string
+    prediction = prediction.replace('_', ' ')
 
-
-    return prediction
+    return (prediction, probability)
