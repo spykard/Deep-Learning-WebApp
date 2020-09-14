@@ -62,7 +62,7 @@ body {
 .text-box {
   font-size: 0.8rem;
   color: #666666;
-  cursor: pointer;
+  cursor: auto;
   display: flex;
   justify-content: center;
   align-items: center;
