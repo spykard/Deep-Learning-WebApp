@@ -346,9 +346,10 @@ def assign_embeddings(embeddings, embeddings_dimension, vocab, mode):
 ### FIRST, execute the entire preprocessing phase again (there are more efficient ways, but this works universally).
 
 
-def run_deeplearning():
+def run_deeplearning(input_test_sentence):
     ###   INPUT    ###
-    test_sentence = ["very bad movie, wow awful such a bad performance from the actors."]
+    #test_sentence = ["very bad movie, wow awful such a bad performance from the actors."]  # Example sentence for debug purposes
+    test_sentence = input_test_sentence
     ###            ###
 
     ### Parameters ###

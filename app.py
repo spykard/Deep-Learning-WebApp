@@ -77,9 +77,12 @@ def predictImage():
 @app.route('/predictText', methods=['GET', 'POST'])
 def predictText():
     if request.method == 'POST':
+
+        input_test_sentence = [request.json]
+
         # Make prediction
         print(f'Running preprocessing...\n')
-        test_sentence = deeplearning.run_deeplearning()
+        test_sentence = deeplearning.run_deeplearning(input_test_sentence)
         print(f'Input sentence preprocessing ready. Running prediction...\n')
 
         result = deeplearning.evaluate_single_sentence(model, test_sentence, multiclass=False)  # a tuple

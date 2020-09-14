@@ -156,13 +156,13 @@ function predictImage(image) {
     });
 }
 
-function predictText(image) {
+function predictText(tex) {
   fetch("/predictText", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(image)
+    body: JSON.stringify(text)
   })
     .then(resp => {
       if (resp.ok)
