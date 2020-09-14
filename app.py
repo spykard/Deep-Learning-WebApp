@@ -75,14 +75,16 @@ def predictText():
         # Make prediction
         print(f'Running preprocessing...\n')
         test_sentence = deeplearning_text.run_preprocessing(input_test_sentence)
+
         print(f'Input sentence preprocessing ready. Running prediction...\n')
-
         result = deeplearning_text.evaluate_single_sentence(model_text, test_sentence, multiclass=False)  # a tuple
+        result_pred = result[0].capitalize()
+        result_prob = f"{result[1][0][0]:.4f}"
 
-        print(f'Prediction is {result[0].capitalize()}, with a probability of {result[1][0][0]}\n')
+        print(f'Prediction is {result_pred}, with a probability of {result_prob}\n')
 
         # Serialize the result, you can add additional fields
-        return jsonify(result=result[0].capitalize(), probability=str(result[1][0][0]))
+        return jsonify(result=result_pred, probability=result_prob)
 
     return None
 
@@ -96,11 +98,13 @@ def predictImage():
         # Make prediction
         print(f'Running preprocessing... Running prediction...\n')
         result = deeplearning_image.run(test_image, model_image)
+        result_pred = result[0].capitalize()
+        result_prob = result[1]
 
-        print(f'Prediction is {result[0].capitalize()}, with a probability of {result[1]}\n')
+        print(f'Prediction is {result_pred}, with a probability of {result_prob}\n')
 
         # Serialize the result, you can add additional fields
-        return jsonify(result=result[0].capitalize(), probability=str(result[1]))
+        return jsonify(result=result_pred, probability=result_prob)
 
     return None
 

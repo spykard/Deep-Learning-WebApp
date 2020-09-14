@@ -33,7 +33,7 @@ def run(img, model):
     # Evaluation Phase
     probabilities = model.predict(x)
     #probability = "{:.3f}".format(np.amax(probabilities))   # Max probability
-    probability = f"{np.amax(probabilities):.3f}"   # Max probability
+    probability = f"{np.amax(probabilities):.4f}"   # Max probability
 
     prediction = decode_predictions(probabilities, top=1)   # ImageNet Decode
 
