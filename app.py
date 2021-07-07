@@ -17,47 +17,22 @@ import deeplearning_image
 # Declare a flask app
 app = Flask(__name__)
 
-# You can use pretrained model from Keras
+# You can use pretrained models from Keras
 # Check https://keras.io/applications/
 # or https://www.tensorflow.org/api_docs/python/tf/keras/applications
 
 # Model saved with Keras model.save()
 MODEL_PATH_TEXT = 'models/best_model_text.h5'
-MODEL_PATH_IMAGE = 'models/best_model_image.h5'
+MODEL_PATH_IMAGE = 'models/ResNet-50.h5'
 
 # Load my text model
 model_text = load_model(MODEL_PATH_TEXT)
 print(f'Text Model loaded, Start serving... - Check http://127.0.0.1:5000/')
 
 # Load my image model
-#model_image = load_model(MODEL_PATH_IMAGE)
-#print(f'Model loaded, Start serving... - Check http://127.0.0.1:5000/')
-# TEMP
-from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
-model_image = MobileNetV2(weights='imagenet')
+# from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
+model_image = load_model(MODEL_PATH_IMAGE)
 print(f'Image Model loaded, Start serving... - Check http://127.0.0.1:5000/')
-
-# IMAGE RELATED
-# def model_predict(img, model):
-#     img = img.resize((224, 224))
-
-#     # Preprocessing the image
-#     x = image.img_to_array(img)
-#     # x = np.true_divide(x, 255)
-#     x = np.expand_dims(x, axis=0)
-
-#     # Be careful how your trained model deals with the input
-#     # otherwise, it won't make correct prediction!
-#     x = preprocess_input(x, mode='tf')
-
-#     preds = model.predict(x)
-#     return preds
-
-# Get the image from post request
-# img = base64_to_pil(request.json)
-
-# Save the image to ./uploads
-# img.save("./uploads/image.png")
 
 
 @app.route('/', methods=['GET'])
@@ -82,6 +57,12 @@ def predictText():
         result_prob = f"{result[1][0][0]:.4f}"
 
         print(f'Prediction is {result_pred}, with a probability of {result_prob}\n')
+
+        # Temp
+        if result_pred == "Positive":
+            result_pred = result_pred + " Emotion (Grouped, Original: H.)"
+        elif result_pred == "Negative":
+            result_pred = result_pred + " Emotion (Grouped, Original: A.)"
 
         # Serialize the result, you can add additional fields
         return jsonify(result=result_pred, probability=result_prob)
