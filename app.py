@@ -59,10 +59,10 @@ def predictText():
         print(f'Prediction is {result_pred}, with a probability of {result_prob}\n')
 
         # Temp
-        if result_pred == "Positive":
-            result_pred = result_pred + " Emotion (Grouped, Original: H.)"
-        elif result_pred == "Negative":
-            result_pred = result_pred + " Emotion (Grouped, Original: A.)"
+        # if result_pred == "Positive":
+        #     result_pred = result_pred + " Emotion (Grouped, Original: H.)"
+        # elif result_pred == "Negative":
+        #     result_pred = result_pred + " Emotion (Grouped, Original: A.)"
 
         # Serialize the result, you can add additional fields
         return jsonify(result=result_pred, probability=result_prob)
