@@ -1,42 +1,35 @@
-# Deploy Keras Model with Flask as Web App in 10 Minutes
+# Deploy a Deep Learning Model as a Web App in 10 Minutes
 
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
-[![](https://img.shields.io/badge/python-3.5%2B-green.svg)]()
+![Python Version](https://img.shields.io/badge/python-3.6%2B-green.svg)
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
-A pretty and customizable web app to deploy your DL model with ease
+A pretty and customizable web app to deploy your Deep Learning Models with ease
 
-<a href="https://www.buymeacoffee.com/fing" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy Me A Coffee"></a>
+## Getting Started
 
-## Getting Started in 10 Minutes
-
-- Clone this repo 
+- Clone this repo
 - Install requirements
 - Run the script
 - Go to http://localhost:5000
 - Done! :tada:
 
-:point_down: Screenshot:
-
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5097752/71063354-8caa1d00-213a-11ea-86eb-879238887c1f.png" height="420px" alt="">
+  <img src="https://github.com/spykard/Deep-Learning-WebApp/blob/master/screenshots/demo_PC?raw=true" height="560px" alt="Example of the Implementation in action">
 </p>
 
 ## New Features :fire:
 
 - Enhanced, mobile-friendly UI
 - Support image drag-and-drop
+- State-of-the-art custom-made text preprocessing
 - Use vanilla JavaScript, HTML and CSS. Remove jQuery and Bootstrap
-- Switch to TensorFlow 2.0 and [tf.keras](https://www.tensorflow.org/guide/keras) by default
-- Upgrade Docker base image to Python 3 (it's 2020)
+- Upgrade Docker base image to Python 3
 
 <p float="left">
-  <img src="https://user-images.githubusercontent.com/5097752/71065048-61c1c800-213e-11ea-92f1-274cbe4734ba.png" height="330px" alt="">
-  <img src="https://user-images.githubusercontent.com/5097752/71062921-aeef6b00-2139-11ea-8b23-6b9eb1e326ca.png" height="330px" alt="">
+  <img src="https://github.com/spykard/Deep-Learning-WebApp/blob/master/screenshots/demo_tablet.PNG?raw=true" height="330px" alt="">
+  <img src="https://github.com/spykard/Deep-Learning-WebApp/blob/master/screenshots/demo_phone.PNG?raw=true" height="330px" alt="">
 </p>
-
-_If you need to use Python 2.x or TensorFlow 1.x, check out the [legacy](https://github.com/mtobeiyf/keras-flask-deploy-webapp/tree/legacy) snapshot_
-
 
 ------------------
 
