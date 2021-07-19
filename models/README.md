@@ -1,1 +1,1 @@
-You can put any trained models from TensorFlow/Keras/PyTorch here.
+You can place any trained models from TensorFlow/Keras/PyTorch here.

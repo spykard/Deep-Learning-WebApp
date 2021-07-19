@@ -1,5 +1,5 @@
-"""Utilities
-"""
+""" Utilities """
+
 import re
 import base64
 

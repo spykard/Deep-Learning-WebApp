@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Deep_Learning.ipynb
+"""Based on my own Python Jupyter Notebook implementation
 
 ## Base Code
 
