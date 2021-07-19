@@ -1,4 +1,4 @@
 # Exclude all Files
 *
 */
-!.gitignore
+private/
