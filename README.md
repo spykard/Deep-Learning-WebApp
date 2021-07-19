@@ -4,7 +4,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-green.svg)
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
-A pretty and customizable web app to deploy your Deep Learning Models with ease
+A pretty and customizable web app to deploy your Deep Learning Models with ease.
 
 ## Getting Started
 
